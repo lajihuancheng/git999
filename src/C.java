@@ -15,5 +15,6 @@ public class C {
         System.out.println();
         System.out.println();
         System.out.println("合并");
+        System.out.println("合并2");
     }
 }

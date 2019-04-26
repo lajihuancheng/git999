@@ -17,5 +17,6 @@ public class B {
         System.out.println();
         System.out.println();
         System.out.println("合并提交");
+        System.out.println("合并2");
     }
 }
