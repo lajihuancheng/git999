@@ -11,4 +11,7 @@
  * @create 2019-04-26 10:58
  **/
 public class C {
+    public static void main(String[] args) {
+        System.out.println();
+    }
 }
