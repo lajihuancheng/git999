@@ -4,6 +4,7 @@ package ddd;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
  
 /**
@@ -14,15 +15,43 @@ public class StreamTest {
     private List<TestStreamModel> getList(){
         List<TestStreamModel> list = new ArrayList<>();
         TestStreamModel testStreamModel = new TestStreamModel();
-        testStreamModel.setId(2);/*主键*/
-        testStreamModel.setName("张三");/*姓名*/
+        testStreamModel.setId(1);/*主键*/
+        testStreamModel.setName("张1");/*姓名*/
         testStreamModel.setClasses(1);/*班级*/
         testStreamModel.setGrade(1);/*年级*/
-        testStreamModel.setScore(80);/*成绩*/
+        testStreamModel.setScore(10);/*成绩*/
         list.add(testStreamModel);
- 
-        TestStreamModel testStreamModel1 = new TestStreamModel();
-        testStreamModel1.setId(1);
+        TestStreamModel testStreamMode2 = new TestStreamModel();
+        testStreamMode2.setId(2);/*主键*/
+        testStreamMode2.setName("张2");/*姓名*/
+        testStreamMode2.setClasses(2);/*班级*/
+        testStreamMode2.setGrade(1);/*年级*/
+        testStreamMode2.setScore(20);/*成绩*/
+        list.add(testStreamMode2);
+        TestStreamModel testStreamMode3 = new TestStreamModel();
+        testStreamMode3.setId(3);/*主键*/
+        testStreamMode3.setName("张3");/*姓名*/
+        testStreamMode3.setClasses(1);/*班级*/
+        testStreamMode3.setGrade(2);/*年级*/
+        testStreamMode3.setScore(30);/*成绩*/
+        list.add(testStreamMode3);
+        TestStreamModel testStreamMode4 = new TestStreamModel();
+        testStreamMode4.setId(4);/*主键*/
+        testStreamMode4.setName("张4");/*姓名*/
+        testStreamMode4.setClasses(2);/*班级*/
+        testStreamMode4.setGrade(2);/*年级*/
+        testStreamMode4.setScore(40);/*成绩*/
+        list.add(testStreamMode4);
+        TestStreamModel testStreamMode5 = new TestStreamModel();
+        testStreamMode5.setId(5);/*主键*/
+        testStreamMode5.setName("张5");/*姓名*/
+        testStreamMode5.setClasses(2);/*班级*/
+        testStreamMode5.setGrade(2);/*年级*/
+        testStreamMode5.setScore(50);/*成绩*/
+        list.add(testStreamMode5);
+
+        /*TestStreamModel testStreamModel1 = new TestStreamModel();
+        testStreamModel1.setId(2);
         testStreamModel1.setName("李四");
         testStreamModel1.setClasses(1);
         testStreamModel1.setGrade(1);
@@ -83,14 +112,40 @@ public class StreamTest {
         testStreamModel8.setClasses(1);
         testStreamModel8.setGrade(2);
         testStreamModel8.setScore(88.8);
-        list.add(testStreamModel8);
- 
+        list.add(testStreamModel8);*/
+
         return list;
     }
  
     public static void main(String[] args) {
         StreamTest streamTest = new StreamTest();
         List<TestStreamModel> list = streamTest.getList();
+
+        /*多重分组，一般多重分组后都是为了统计，比如说统计每个年级，每个班的总分数*/
+        //Map<Integer, List<TestStreamModel>> collect = list.stream().collect(Collectors.groupingBy(t -> t.getGrade()));
+        //Map<Integer, Map<Integer, List<TestStreamModel>>> collect = list.stream().collect(Collectors.groupingBy(t -> t.getGrade(), Collectors.groupingBy(t -> t.getClasses())));
+        ArrayList<TestStreamModel> objects = new ArrayList<>();
+        list.stream().collect(Collectors.groupingBy(t -> t.getGrade() + "=" + t.getClasses())).forEach(
+                (k,v)->{
+                    TestStreamModel testStreamModel = new TestStreamModel();
+                    /*testStreamModel.setId(v.get(0).getId());
+                    testStreamModel.setScore(v.stream().mapToDouble(t -> t.getScore()).sum());
+                    System.out.println("Item : " + k + " Count : " + v.toString());
+                    System.out.println("Item : " + k + " Count : " + testStreamModel.toString());*/
+                    double a= 0.0;
+                    for (TestStreamModel streamModel : v) {
+                        a = a+streamModel.getScore();;
+                    }
+                    testStreamModel.setScore(a);
+                    objects.add(testStreamModel);
+                }
+        );
+//        /Map<String, List<TestStreamModel>> collect1 = list.stream().collect(Collectors.groupingBy(t -> t.getGrade() + "=" + t.getClasses()));
+        /*Map<Integer, Map<Integer, List<TestStreamModel>>> collect = list.stream().collect(Collectors.groupingBy(t -> t.getGrade(), Collectors.groupingBy(t -> t.getClasses())));
+        Map<String, List<TestStreamModel>> collect1 = list.stream().collect(Collectors.groupingBy(t -> t.getGrade() + "=" + t.getClasses()));
+        System.out.println("取出一年级一班的总分："+collect1.get(1).get(1));*/
+
+
  
         /*去重，去除重复对象（每个属性的值都一样的），需要注意的是要先重写对象TestStreamModel的equals和hashCode方法*/
         System.out.println("去重前："+list);
@@ -131,9 +186,9 @@ public class StreamTest {
         System.out.println("取出一年级一班的list："+groupMap.get(1).get(1));
  
         /*多重分组，一般多重分组后都是为了统计，比如说统计每个年级，每个班的总分数*/
-        Map<Integer/*年级id*/, Map<Integer/*班级id*/, Double>> sumMap = list.stream().collect(Collectors.groupingBy(t -> t.getGrade(), Collectors.groupingBy(t -> t.getClasses(), Collectors.summingDouble(t -> t.getScore()))));
+        /*Map<Integer*//*年级id*//*, Map<Integer*//*班级id*//*, Double>> sumMap = list.stream().collect(Collectors.groupingBy(t -> t.getGrade(), Collectors.groupingBy(t -> t.getClasses(), Collectors.summingDouble(t -> t.getScore()))));
         System.out.println(sumMap);
-        System.out.println("取出一年级一班的总分："+sumMap.get(1).get(1));
+        System.out.println("取出一年级一班的总分："+sumMap.get(1).get(1));*/
  
         /*stream是链式的，这些功能是可以一起使用的，例如：计算每个年级每个班的及格人数*/
         Map<Integer/*年级*/, Map<Integer/*班级*/, Long/*人数*/>> integerMap = list.stream().filter(t -> t.getScore() >= 60).collect(Collectors.groupingBy(t -> t.getGrade(), Collectors.groupingBy(t -> t.getClasses(), Collectors.counting())));
