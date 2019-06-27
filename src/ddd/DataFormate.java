@@ -5,6 +5,10 @@ package ddd;/**
  * Version 1.0
  */
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
 /**
  *
  * @liubo
@@ -16,6 +20,19 @@ public class DataFormate {
         String[] split = str.split(",");
         for (int i = 0; i <split.length ; i++) {
             System.out.println("\'" + split[0]+ "\',");
+        }
+        String a= "2019-06-05";
+        String b= "2019-06-06";
+        int i = a.compareTo(b);
+        System.out.println();
+
+
+        List<String> strings = Arrays.asList("11", "22", "33");
+
+        try {
+            int i1 = 1 / 0;
+        }catch (Exception e){
+            System.out.println(e.getCause().getMessage());
         }
 
     }
